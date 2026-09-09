@@ -1,0 +1,19 @@
+---
+- name: Ver imagen y colecciones instaladas en el EE
+  hosts: localhost
+  gather_facts: false
+  connection: local
+
+  tasks:
+    - name: Mostrar la imagen de ejecución usada por este Job
+      ansible.builtin.debug:
+        msg: "Imagen de ejecución: {{ lookup('env', 'ANSIBLE_EXECUTION_ENVIRONMENT_IMAGE') | default('No disponible') }}"
+
+    - name: Listar colecciones dentro del EE
+      ansible.builtin.command: ansible-galaxy collection list
+      register: colecciones
+      changed_when: false
+
+    - name: Mostrar colecciones instaladas en el EE
+      ansible.builtin.debug:
+        var: colecciones.stdout_lines
