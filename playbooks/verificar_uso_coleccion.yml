@@ -1,0 +1,26 @@
+---
+- name: Probar modulo de la coleccion community.general
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Crear un archivo INI de prueba usando community.general.ini_file
+      community.general.ini_file:
+        path: /tmp/prueba_community.ini
+        section: ConfigPrueba
+        option: estado
+        value: "Coleccion cargada exitosamente"
+        mode: '0644'
+      register: resultado_ini
+
+    - name: Leer el contenido generado para confirmar que funciono
+      ansible.builtin.slurp:
+        src: /tmp/prueba_community.ini
+      register: contenido_archivo
+
+    - name: Mostrar el resultado de la prueba
+      ansible.builtin.debug:
+        msg:
+          - "Mensaje del modulo: {{ resultado_ini.msg | default('Cambio realizado correctamente') }}"
+          - "Contenido del archivo: {{ contenido_archivo.content | b64decode }}"
