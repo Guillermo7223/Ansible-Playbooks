@@ -3,4 +3,3 @@ collections:
   - name: amazon.aws
   - name: community.general
   - name: ovirt.ovirt
-  - name: redhat.rhv
